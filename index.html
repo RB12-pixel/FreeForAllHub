@@ -1,0 +1,786 @@
+version: 1.0
+Made by FreeForAll Co.
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreeForAllHub</title>
+    
+    <meta name="theme-color" content="#28a745">
+    <link rel="icon" type="image/png" href="icon-512.png">
+    <link rel="manifest" href="manifest.json">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* INTESTAZIONE */
+        .app-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .app-header h1 {
+            color: #28a745;
+            margin-bottom: 5px;
+            font-size: 32px;
+        }
+
+        .app-header h2 {
+            color: #555;
+            font-weight: normal;
+            font-size: 20px;
+            margin-top: 0;
+        }
+
+        /* SCHERMATA MENU PRINCIPALE */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .btn-menu {
+            background-color: white;
+            color: #333;
+            border: 2px solid #28a745;
+            border-radius: 12px;
+            padding: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin: 0;
+        }
+
+        .btn-menu:hover {
+            background-color: #28a745;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        /* GESTIONE PAGINE/SEZIONI */
+        .pagina {
+            display: none;
+            width: 100%;
+        }
+
+        .pagina.attiva {
+            display: block;
+        }
+
+        /* STILE SCHEDE STRUMENTI */
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .btn-indietro {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 15px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 15px;
+            width: fit-content;
+            transition: background 0.2s;
+        }
+
+        .btn-indietro:hover {
+            background-color: #5a6268;
+        }
+
+        h3 {
+            margin-top: 0;
+            text-align: center;
+            color: #333;
+            border-bottom: 2px solid #28a745;
+            padding-bottom: 10px;
+        }
+
+        p {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #333;
+            font-size: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .convertitore-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-inverti {
+            background-color: #e9ecef;
+            color: #333;
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            font-size: 13px;
+            margin: 10px auto;
+            width: auto;
+        }
+
+        .btn-inverti:hover {
+            background-color: #dee2e6;
+        }
+
+        button.btn-azione {
+            width: 100%;
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+
+        button.btn-azione:hover {
+            background-color: #218838;
+        }
+
+        .risultato {
+            margin-top: 20px;
+            padding-top: 10px;
+            font-weight: bold;
+            font-size: 18px;
+            color: #28a745;
+            text-align: center;
+        }
+
+        /* CRONOMETRO */
+        .timer-display {
+            font-size: 45px;
+            font-family: monospace;
+            margin: 20px 0;
+            text-align: center;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .btn-group button {
+            padding: 12px;
+            font-size: 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-start { background-color: #28a745; }
+        .btn-start:hover { background-color: #218838; }
+        .btn-pause { background-color: #ffc107; color: #333 !important; }
+        .btn-pause:hover { background-color: #e0a800; }
+        .btn-reset { background-color: #dc3545; }
+        .btn-reset:hover { background-color: #bd2130; }
+
+        /* RUOTA SVG */
+        .ruota-wrapper {
+            position: relative;
+            width: 240px;
+            height: 240px;
+            margin: 15px auto;
+        }
+
+        .freccia {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 22px solid #dc3545;
+            z-index: 10;
+        }
+
+        .ruota-ruotabile {
+            width: 100%;
+            height: 100%;
+            transition: transform 4s cubic-bezier(0.1, 0.8, 0.2, 1);
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .btn-gira { background-color: #007bff !important; }
+        .btn-gira:hover { background-color: #0056b3 !important; }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+
+    <div id="pagina-home" class="pagina attiva">
+        <div class="app-header">
+            <h1>FreeForAllHub</h1>
+            <h2>Di cosa hai bisogno oggi?</h2>
+        </div>
+
+        <div class="menu-grid">
+            <button class="btn-menu" onclick="mostraPagina('pagina-calcolatrice')">🧮 Calcolatrice</button>
+            <button class="btn-menu" onclick="mostraPagina('pagina-temperatura')">🌡️ Convertitore Temperatura</button>
+            <button class="btn-menu" onclick="mostraPagina('pagina-valuta')">💶 Convertitore Valuta</button>
+            <button class="btn-menu" onclick="mostraPagina('pagina-cronometro')">⏱️ Cronometro</button>
+            <button class="btn-menu" onclick="mostraPagina('pagina-ruota')">🎡 Ruota della Fortuna</button>
+        </div>
+    </div>
+
+    <div id="pagina-calcolatrice" class="pagina">
+        <button class="btn-indietro" onclick="mostraPagina('pagina-home')">⬅ Torna al Menu</button>
+        <div class="container">
+            <h3>Calcolatrice Online</h3>
+            
+            <label for="calc_numero1">Primo numero:</label>
+            <input type="number" id="calc_numero1" placeholder="Inserisci il primo numero">
+
+            <label for="operazione">Scegli l'operazione:</label>
+            <select id="operazione">
+                <option value="+">Addizione (+)</option>
+                <option value="-">Sottrazione (-)</option>
+                <option value="*">Moltiplicazione (*)</option>
+                <option value="/">Divisione (/)</option>
+            </select>
+
+            <label for="calc_numero2">Secondo numero:</label>
+            <input type="number" id="calc_numero2" placeholder="Inserisci il secondo numero">
+
+            <button class="btn-azione" onclick="calcola()">Calcola Risultato</button>
+
+            <div class="risultato" id="risultatoOp">Il risultato apparirà qui.</div>
+        </div>
+    </div>
+
+    <div id="pagina-temperatura" class="pagina">
+        <button class="btn-indietro" onclick="mostraPagina('pagina-home')">⬅ Torna al Menu</button>
+        <div class="container">
+            <h3>Convertitore Temperatura</h3>
+            <p>Seleziona le unità e inserisci il valore.</p>
+            
+            <label for="valoreTemp">Valore da convertire:</label>
+            <input type="number" id="valoreTemp" placeholder="Inserisci il valore" oninput="calcolaTemperatura()">
+
+            <div class="convertitore-row">
+                <div style="flex: 1;">
+                    <label for="unitaTempDa">Da:</label>
+                    <select id="unitaTempDa" onchange="calcolaTemperatura()">
+                        <option value="C" selected>Celsius (°C)</option>
+                        <option value="F">Fahrenheit (°F)</option>
+                        <option value="K">Kelvin (K)</option>
+                        <option value="R">Rankine (°R)</option>
+                        <option value="Re">Réaumur (°Ré)</option>
+                    </select>
+                </div>
+                <div style="flex: 1;">
+                    <label for="unitaTempA">A:</label>
+                    <select id="unitaTempA" onchange="calcolaTemperatura()">
+                        <option value="C">Celsius (°C)</option>
+                        <option value="F" selected>Fahrenheit (°F)</option>
+                        <option value="K">Kelvin (K)</option>
+                        <option value="R">Rankine (°R)</option>
+                        <option value="Re">Réaumur (°Ré)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="btn-inverti" onclick="invertiTemperatura()">⇄ Inverti Unità</button>
+
+            <div class="risultato" id="risultatoTemp">Inserisci un valore per iniziare</div>
+        </div>
+    </div>
+
+    <div id="pagina-valuta" class="pagina">
+        <button class="btn-indietro" onclick="mostraPagina('pagina-home')">⬅ Torna al Menu</button>
+        <div class="container">
+            <h3>Convertitore Valuta</h3>
+            <p>Seleziona la moneta e inserisci l'importo.</p>
+            
+            <label for="valoreValuta">Importo:</label>
+            <input type="number" id="valoreValuta" placeholder="Inserisci importo" oninput="calcolaValuta()">
+
+            <div class="convertitore-row">
+                <div style="flex: 1;">
+                    <label for="valutaDa">Da:</label>
+                    <select id="valutaDa" onchange="calcolaValuta()">
+                        <option value="EUR" selected>Euro (€)</option>
+                        <option value="USD">Dollaro US ($)</option>
+                        <option value="GBP">Sterlina UK (£)</option>
+                        <option value="JPY">Yen Giapponese (¥)</option>
+                        <option value="CHF">Franco Svizzero (CHF)</option>
+                        <option value="CAD">Dollaro Canadese (CAD)</option>
+                        <option value="AUD">Dollaro Australiano (AUD)</option>
+                        <option value="CNH">Yuan Cinese (¥)</option>
+                        <option value="BRL">Real Brasiliano (R$)</option>
+                        <option value="INR">Rupia Indiana (₹)</option>
+                    </select>
+                </div>
+                <div style="flex: 1;">
+                    <label for="valutaA">A:</label>
+                    <select id="valutaA" onchange="calcolaValuta()">
+                        <option value="EUR">Euro (€)</option>
+                        <option value="USD" selected>Dollaro US ($)</option>
+                        <option value="GBP">Sterlina UK (£)</option>
+                        <option value="JPY">Yen Giapponese (¥)</option>
+                        <option value="CHF">Franco Svizzero (CHF)</option>
+                        <option value="CAD">Dollaro Canadese (CAD)</option>
+                        <option value="AUD">Dollaro Australiano (AUD)</option>
+                        <option value="CNH">Yuan Cinese (¥)</option>
+                        <option value="BRL">Real Brasiliano (R$)</option>
+                        <option value="INR">Rupia Indiana (₹)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="btn-inverti" onclick="invertiValuta()">⇄ Inverti Unità</button>
+
+            <div class="risultato" id="risultatoValuta">Inserisci un valore per iniziare</div>
+        </div>
+    </div>
+
+    <div id="pagina-cronometro" class="pagina">
+        <button class="btn-indietro" onclick="mostraPagina('pagina-home')">⬅ Torna al Menu</button>
+        <div class="container">
+            <h3>Cronometro</h3>
+            <p>Monitora i tuoi tempi di lavoro o pausa.</p>
+            
+            <div class="timer-display" id="tempoMostrato">00:00:00</div>
+            
+            <div class="btn-group">
+                <button class="btn-start" onclick="avviaCronometro()">Avvia</button>
+                <button class="btn-pause" onclick="pausaCronometro()">Pausa</button>
+                <button class="btn-reset" onclick="resetCronometro()">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="pagina-ruota" class="pagina">
+        <button class="btn-indietro" onclick="mostraPagina('pagina-home')">⬅ Torna al Menu</button>
+        <div class="container">
+            <h3>Ruota della Fortuna</h3>
+            <p>Opzioni separate da virgola, poi gira!</p>
+            
+            <input type="text" id="opzioniRuota" value="Pizza, Sushi, Pasta, Kebab, Piadina, Hamburger">
+            <button class="btn-azione btn-gira" onclick="aggiornaOpzioni()">Aggiorna Ruota</button>
+
+            <div class="ruota-wrapper">
+                <div class="freccia"></div>
+                <div id="ruotaSito" class="ruota-ruotabile">
+                    <svg id="svgRuota" viewBox="0 0 200 200"></svg>
+                </div>
+            </div>
+            
+            <button class="btn-azione btn-gira" id="bottoneGira" onclick="giraRuota()">Gira la Ruota!</button>
+            <div class="risultato" id="risultatoRuota">Pronto a girare!</div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+// ==========================================
+// REGISTRAZIONE SERVICE WORKER
+// ==========================================
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('Service Worker registrato con successo!'))
+            .catch(err => console.log('Errore registrazione Service Worker:', err));
+    });
+}
+
+// ==========================================
+// LOGICA CAMBIO PAGINA
+// ==========================================
+function mostraPagina(idPagina) {
+    const pagine = document.querySelectorAll('.pagina');
+    pagine.forEach(p => p.classList.remove('attiva'));
+
+    const paginaScelta = document.getElementById(idPagina);
+    if (paginaScelta) {
+        paginaScelta.classList.add('attiva');
+    }
+
+    if (idPagina === 'pagina-ruota') {
+        aggiornaOpzioni();
+    }
+}
+
+// ==========================================
+// CONVERTITORE TEMPERATURA
+// ==========================================
+function calcolaTemperatura() {
+    let val = parseFloat(document.getElementById("valoreTemp").value);
+    if (isNaN(val)) {
+        document.getElementById("risultatoTemp").innerText = "Inserisci un valore per iniziare";
+        return;
+    }
+
+    let da = document.getElementById("unitaTempDa").value;
+    let a = document.getElementById("unitaTempA").value;
+
+    let celsius;
+    switch(da) {
+        case "C": celsius = val; break;
+        case "F": celsius = (val - 32) * 5/9; break;
+        case "K": celsius = val - 273.15; break;
+        case "R": celsius = (val - 491.67) * 5/9; break;
+        case "Re": celsius = val * 1.25; break;
+    }
+
+    let risultato;
+    switch(a) {
+        case "C": risultato = celsius; break;
+        case "F": risultato = (celsius * 9/5) + 32; break;
+        case "K": risultato = celsius + 273.15; break;
+        case "R": risultato = (celsius + 273.15) * 9/5; break;
+        case "Re": risultato = celsius * 0.8; break;
+    }
+
+    document.getElementById("risultatoTemp").innerText = `${val} °${da} = ${risultato.toFixed(2)} °${a}`;
+}
+
+function invertiTemperatura() {
+    let selectDa = document.getElementById("unitaTempDa");
+    let selectA = document.getElementById("unitaTempA");
+    
+    let temp = selectDa.value;
+    selectDa.value = selectA.value;
+    selectA.value = temp;
+    
+    calcolaTemperatura();
+}
+
+// ==========================================
+// CONVERTITORE VALUTA
+// ==========================================
+const tassiEUR = {
+    "EUR": 1.0, "USD": 1.08, "GBP": 0.85, "JPY": 165.0,
+    "CHF": 0.96, "CAD": 1.48, "AUD": 1.63, "CNH": 7.85,
+    "BRL": 5.80, "INR": 90.2
+};
+
+function calcolaValuta() {
+    let importo = parseFloat(document.getElementById("valoreValuta").value);
+    if (isNaN(importo)) {
+        document.getElementById("risultatoValuta").innerText = "Inserisci un valore per iniziare";
+        return;
+    }
+
+    let da = document.getElementById("valutaDa").value;
+    let a = document.getElementById("valutaA").value;
+
+    let inEUR = importo / tassiEUR[da];
+    let risultato = inEUR * tassiEUR[a];
+
+    document.getElementById("risultatoValuta").innerText = `${importo.toFixed(2)} ${da} = ${risultato.toFixed(2)} ${a}`;
+}
+
+function invertiValuta() {
+    let selectDa = document.getElementById("valutaDa");
+    let selectA = document.getElementById("valutaA");
+
+    let temp = selectDa.value;
+    selectDa.value = selectA.value;
+    selectA.value = temp;
+
+    calcolaValuta();
+}
+
+// ==========================================
+// LOGICA CALCOLATRICE
+// ==========================================
+function ottieniStringaPeriodica(num, den) {
+    let segno = (num * den < 0) ? "-" : "";
+    num = Math.abs(num);
+    den = Math.abs(den);
+
+    let parteIntera = Math.floor(num / den);
+    let resto = num % den;
+
+    if (resto === 0) return segno + parteIntera;
+
+    let mappaResti = {};
+    let cifreDecimali = "";
+
+    while (resto !== 0 && !(resto in mappaResti)) {
+        mappaResti[resto] = cifreDecimali.length;
+        resto *= 10;
+        cifreDecimali += Math.floor(resto / den);
+        resto %= den;
+    }
+
+    if (resto === 0) {
+        return segno + parteIntera + "," + cifreDecimali;
+    } else {
+        let indiceInizioPeriodo = mappaResti[resto];
+        let antiperiodo = cifreDecimali.substring(0, indiceInizioPeriodo);
+        let periodo = cifreDecimali.substring(indiceInizioPeriodo);
+        return segno + parteIntera + "," + antiperiodo + '<span style="text-decoration: overline;">' + periodo + '</span>';
+    }
+}
+
+function calcola() {
+    let num1 = parseFloat(document.getElementById("calc_numero1").value);
+    let num2 = parseFloat(document.getElementById("calc_numero2").value);
+    let operazione = document.getElementById("operazione").value;
+
+    if (isNaN(num1) || isNaN(num2)) {
+        document.getElementById("risultatoOp").innerText = "Per favore, inserisci entrambi i numeri.";
+        return;
+    }
+
+    let totale;
+    switch (operazione) {
+        case "+": totale = num1 + num2; document.getElementById("risultatoOp").innerText = "Risultato: " + totale; break;
+        case "-": totale = num1 - num2; document.getElementById("risultatoOp").innerText = "Risultato: " + totale; break;
+        case "*": totale = num1 * num2; document.getElementById("risultatoOp").innerText = "Risultato: " + totale; break;
+        case "/":
+            if (num2 === 0) {
+                document.getElementById("risultatoOp").innerText = "Errore: impossibile dividere per zero.";
+                return;
+            }
+            document.getElementById("risultatoOp").innerHTML = "Risultato: " + ottieniStringaPeriodica(num1, num2);
+            break;
+    }
+}
+
+// ==========================================
+// LOGICA RUOTA SVG
+// ==========================================
+const colori = ["#ffbc42", "#d81159", "#8f2d56", "#218380", "#73d2de", "#ff7f51", "#80ed99", "#9b5de5"];
+let opzioni = [];
+let gradiCorrenti = 0;
+let staGirando = false;
+
+function aggiornaOpzioni() {
+    if (staGirando) return;
+
+    let inputOpzioni = document.getElementById("opzioniRuota");
+    if (!inputOpzioni) return;
+    
+    let testo = inputOpzioni.value;
+    opzioni = testo.split(",").map(opt => opt.trim()).filter(opt => opt !== "");
+    
+    if (opzioni.length < 2) opzioni = ["Sì", "No"];
+
+    let svg = document.getElementById("svgRuota");
+    if (!svg) return;
+    
+    svg.innerHTML = "";
+
+    const n = opzioni.length;
+    const centro = 100;
+    const raggio = 95;
+    const angoloFetta = 360 / n;
+
+    for (let i = 0; i < n; i++) {
+        let aInizio = i * angoloFetta;
+        let aFine = (i + 1) * angoloFetta;
+
+        let radInizio = (aInizio - 90) * Math.PI / 180;
+        let radFine = (aFine - 90) * Math.PI / 180;
+
+        let x1 = centro + raggio * Math.cos(radInizio);
+        let y1 = centro + raggio * Math.sin(radInizio);
+        let x2 = centro + raggio * Math.cos(radFine);
+        let y2 = centro + raggio * Math.sin(radFine);
+
+        let grandeArco = angoloFetta > 180 ? 1 : 0;
+        let d = `M ${centro} ${centro} L ${x1} ${y1} A ${raggio} ${raggio} 0 ${grandeArco} 1 ${x2} ${y2} Z`;
+
+        let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", d);
+        path.setAttribute("fill", colori[i % colori.length]);
+        path.setAttribute("stroke", "#ffffff");
+        path.setAttribute("stroke-width", "1");
+        svg.appendChild(path);
+
+        let testoAngolo = aInizio + (angoloFetta / 2);
+        let textNode = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        
+        textNode.setAttribute("x", centro + (raggio * 0.55) * Math.cos((testoAngolo - 90) * Math.PI / 180));
+        textNode.setAttribute("y", centro + (raggio * 0.55) * Math.sin((testoAngolo - 90) * Math.PI / 180));
+        textNode.setAttribute("fill", "#ffffff");
+        textNode.setAttribute("font-size", "8");
+        textNode.setAttribute("font-weight", "bold");
+        textNode.setAttribute("text-anchor", "middle");
+        textNode.setAttribute("dominant-baseline", "middle");
+        textNode.setAttribute("transform", `rotate(${testoAngolo}, ${centro + (raggio * 0.55) * Math.cos((testoAngolo - 90) * Math.PI / 180)}, ${centro + (raggio * 0.55) * Math.sin((testoAngolo - 90) * Math.PI / 180)})`);
+        textNode.textContent = opzioni[i];
+        
+        svg.appendChild(textNode);
+    }
+    
+    let ruotaSito = document.getElementById("ruotaSito");
+    if (ruotaSito) {
+        ruotaSito.style.transition = 'none';
+        gradiCorrenti = 0;
+        ruotaSito.style.transform = `rotate(0deg)`;
+        
+        setTimeout(() => {
+            ruotaSito.style.transition = 'transform 4s cubic-bezier(0.1, 0.8, 0.2, 1)';
+        }, 50);
+    }
+
+    document.getElementById("risultatoRuota").innerText = "Pronto a girare!";
+}
+
+function giraRuota() {
+    if (staGirando) return;
+
+    let ruotaSito = document.getElementById("ruotaSito");
+    if (!ruotaSito) return;
+
+    staGirando = true;
+    document.getElementById("risultatoRuota").innerText = "Gira gira gira...";
+
+    const giriMinimi = 5; 
+    const gradiCasuali = Math.floor(Math.random() * 360);
+    const gradiTotali = (giriMinimi * 360) + gradiCasuali;
+
+    gradiCorrenti += gradiTotali;
+    ruotaSito.style.transform = `rotate(${gradiCorrenti}deg)`;
+
+    setTimeout(() => {
+        staGirando = false;
+        const gradiEffettivi = (360 - (gradiCorrenti % 360)) % 360;
+        const indiceVincitore = Math.floor(gradiEffettivi / (360 / opzioni.length)) % opzioni.length;
+        const opzioneEstratta = opzioni[indiceVincitore];
+
+        document.getElementById("risultatoRuota").innerText = "Risultato: " + opzioneEstratta;
+
+        // Chiede all'utente se vuole rimuovere lo spicchio estratto
+        setTimeout(() => {
+            const rimuovi = confirm(`È uscito: "${opzioneEstratta}"!\n\nVuoi eliminarlo dalla ruota?`);
+            if (rimuovi) {
+                // Rimuove l'elemento dall'array e aggiorna l'input di testo
+                opzioni.splice(indiceVincitore, 1);
+                document.getElementById("opzioniRuota").value = opzioni.join(", ");
+                aggiornaOpzioni();
+            }
+        }, 200);
+
+    }, 4000);
+}
+
+// ==========================================
+// LOGICA CRONOMETRO
+// ==========================================
+let tempoInizio = 0;
+let tempoTrascorso = 0;
+let timerInterval;
+let inEsecuzione = false;
+
+function aggiornaTempo() {
+    let tempoAttuale = Date.now();
+    let differenza = tempoAttuale - tempoInizio + tempoTrascorso;
+
+    let ore = Math.floor(differenza / 3600000);
+    let minuti = Math.floor((differenza % 3600000) / 60000);
+    let secondi = Math.floor((differenza % 60000) / 1000);
+    
+    let oreString = ore.toString().padStart(2, '0');
+    let minString = minuti.toString().padStart(2, '0');
+    let secString = secondi.toString().padStart(2, '0');
+
+    document.getElementById("tempoMostrato").innerText = `${oreString}:${minString}:${secString}`;
+}
+
+function avviaCronometro() {
+    if (!inEsecuzione) {
+        inEsecuzione = true;
+        tempoInizio = Date.now();
+        timerInterval = setInterval(aggiornaTempo, 100);
+    }
+}
+
+function pausaCronometro() {
+    if (inEsecuzione) {
+        inEsecuzione = false;
+        clearInterval(timerInterval);
+        tempoTrascorso += Date.now() - tempoInizio;
+    }
+}
+
+function resetCronometro() {
+    inEsecuzione = false;
+    clearInterval(timerInterval);
+    tempoInizio = 0;
+    tempoTrascorso = 0;
+    document.getElementById("tempoMostrato").innerText = "00:00:00";
+}
+</script>
+
+</body>
+</html>
